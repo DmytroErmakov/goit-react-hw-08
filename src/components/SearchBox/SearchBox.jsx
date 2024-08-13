@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeFilter, selectNameFilter } from "../../redux/filtersSlice";
-
+import { changeFilter } from "../../redux/filters/slice";
+import {selectNameFilter} from "../../redux/filters/selectors"
 import css from "../SearchBox/SearchBox.module.css";
 
 export default function SearchBox() {
@@ -20,7 +20,6 @@ export default function SearchBox() {
           onChange={e => dispatch(changeFilter(e.target.value))}
           placeholder="Search contacts"
         />
-        <button type="submit">Search</button>
       </form>
     </div>
   );

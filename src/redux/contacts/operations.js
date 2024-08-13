@@ -1,13 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://66af82c0b05db47acc5a084b.mockapi.io";
 
 export const fetchContacts = createAsyncThunk(
-  "contacts/getAll",
+  "contacts/fetchContacts",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("/contacts");
+      const response = await axios.get("/api/contacts"); // перевірити
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -33,9 +32,10 @@ export const deleteContact = createAsyncThunk(
      async (contactId, thunkAPI) => {
      try {
        const response = await axios.delete(`/contacts/${contactId}`);
+       // return response.data;
        // Повертаємо ідентифікатор, так як бекенд може не повертати ніяких даних
        return { id: contactId };
      } catch (error) {
           return thunkAPI.rejectWithValue(error.message);
      }
-}); 
+  }); 

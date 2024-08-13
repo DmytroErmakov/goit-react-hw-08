@@ -1,5 +1,9 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { fetchContacts, addContact, deleteContact } from "./contactsOps";
+import { fetchContacts, addContact, deleteContact } from "./operations";
+
+import { selectContacts } from "./selectors";
+import { selectNameFilter } from "../filters/selectors";
+import { logOut } from "../auth/operations";
 
 
 const contactsSlice = createSlice({
@@ -46,26 +50,30 @@ const contactsSlice = createSlice({
       .addCase(deleteContact.rejected, state => {
         state.loading = false;
         state.error = true;
+      })
+      .addCase(logOut.fulfilled, state => {
+        state.items = [];
+        state.error = null;
+        state.loading = false;
       });
   },
 });
 
 
-export const selectContacts = state => state.contacts.items;
-export const selectNameFilter = state => state.filters.name;
+
 
 // Мемоізований селектор
 export const selectFilteredContacts = createSelector(
   [selectContacts, selectNameFilter],
-  (contacts, nameFilter) =>
-    contacts.filter(contact =>
+  (contacts, nameFilter) => {
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(nameFilter.toLowerCase())
     )
+  }
 );
 
 
 export default contactsSlice.reducer;
 
-export const selectLoading = (state) => state.contacts.loaing;
 
-export const selectError = (state) => state.contacts.error;
+
